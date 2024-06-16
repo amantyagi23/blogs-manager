@@ -28,15 +28,16 @@ const SignUpPage: React.FC = () => {
     const { register, reset, handleSubmit, formState: { errors } } = useForm<ISignUpForm>()
 
 
-    const onSubmit = (data: ISignUpForm) => {
-
-        console.log(data);
-        reset()
-
+    const onSubmit = async (data: ISignUpForm) => {
         try {
-
-            user?.registerUser(data.email, data.password);
+            reset()
+            await user?.registerUser(data.email, data.password);
+            toast({
+                title: "User Register Successful",
+                description: new Date().toISOString()
+            })
             navigate("/login")
+
         } catch (error) {
             toast({
                 title: `Error !`,
