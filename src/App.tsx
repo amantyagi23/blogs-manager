@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage"
 import SignUpPage from "./pages/SignUpPage"
 import DashboardPage from "./pages/DashboardPage"
 import RootLayout from "./shared/layouts/RootLayout"
+import { Toaster } from "./shared/components/ui/toaster"
 
 const App = () => {
   return <>
@@ -16,6 +17,7 @@ const App = () => {
 
       </Routes>
     </BrowserRouter>
+    <Toaster />
   </>
 }
 

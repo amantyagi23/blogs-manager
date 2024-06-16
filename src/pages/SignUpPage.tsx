@@ -9,8 +9,11 @@ import {
 } from '@/shared/components/ui/card'
 import { Input } from '@/shared/components/ui/input'
 import { Label } from '@/shared/components/ui/label'
-import React from 'react'
+import { toast } from '@/shared/components/ui/use-toast'
+import { UserContext } from '@/shared/lib/providers/UserProvider'
+import React, { useContext } from 'react'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 
 interface ISignUpForm {
     email: string,
@@ -20,7 +23,8 @@ interface ISignUpForm {
 
 
 const SignUpPage: React.FC = () => {
-
+    const navigate = useNavigate();
+    const user = useContext(UserContext);
     const { register, reset, handleSubmit, formState: { errors } } = useForm<ISignUpForm>()
 
 
@@ -31,8 +35,13 @@ const SignUpPage: React.FC = () => {
 
         try {
 
+            user?.registerUser(data.email, data.password);
+            navigate("/login")
         } catch (error) {
-
+            toast({
+                title: `Error !`,
+                description: `${error.message.toString()}`,
+            })
         }
 
     }
