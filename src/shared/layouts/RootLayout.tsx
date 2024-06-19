@@ -1,5 +1,6 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useContext, useEffect } from 'react'
 import NavBar from '../components/NavBar'
+import { UserContext } from '../lib/providers/UserProvider'
 
 
 interface Props {
@@ -7,6 +8,11 @@ interface Props {
 }
 
 const RootLayout: React.FC<Props> = ({ children }) => {
+    const user = useContext(UserContext);
+
+    useEffect(() => {
+        user?.getMe()
+    }, []);
     return (
         <>
             <NavBar />

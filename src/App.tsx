@@ -5,6 +5,7 @@ import SignUpPage from "./pages/SignUpPage"
 import DashboardPage from "./pages/DashboardPage"
 import RootLayout from "./shared/layouts/RootLayout"
 import { Toaster } from "./shared/components/ui/toaster"
+import ProtectedRoute from "./shared/routes/ProtectedRoute"
 
 const App = () => {
   return <>
@@ -13,7 +14,7 @@ const App = () => {
         <Route path="/" element={<RootLayout><HomePage /></RootLayout>} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/join" element={<SignUpPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/dashboard" element={<RootLayout><ProtectedRoute><DashboardPage /></ProtectedRoute></RootLayout>} />
 
       </Routes>
     </BrowserRouter>

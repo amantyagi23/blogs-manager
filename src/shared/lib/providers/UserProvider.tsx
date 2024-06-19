@@ -1,5 +1,6 @@
 import { auth } from "@/config/fireBaseConfig";
-import { createUserWithEmailAndPassword, signInWithCustomToken, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
 import { createContext, ReactNode, useState } from "react"
 import Cookies from "js-cookie";
 interface IUser {
@@ -11,7 +12,7 @@ interface IUser {
 interface IUserContextType {
     user: IUser | null;
     loading: boolean;
-    getMe: () => Promise<void>;
+    getMe: () => void;
     registerUser: (email: string, password: string) => Promise<void>;
     loginUser: (email: string, password: string) => Promise<void>;
     logoutUser: () => void;
@@ -39,11 +40,25 @@ const UserProvider: React.FC<Iprops> = ({ children }) => {
     }
     const loginUser = async (email: string, password: string) => {
         try {
-            const response = await signInWithEmailAndPassword(auth, email, password);
+            const response = await signInWithEmailAndPassword(auth, email, password)
             console.log(response);
-            const accessToken = response.user.accessToken;
-            Cookies.set("accessToken", accessToken, { domain: "http://localhost:5173/", path: "/", expires: 60, sameSite: "Lax", secure: false });
+            setUser({
+                email: response.user.email ? response.user.email : "",
+                id: response.user.uid,
+                name: response.user.displayName ? response.user.displayName : "",
+            })
+            console.log(user);
 
+            localStorage.setItem("user", JSON.stringify({
+                email: response.user.email ? response.user.email : "",
+                id: response.user.uid,
+                name: response.user.displayName ? response.user.displayName : "",
+            }));
+            const accessToken = response.user.accessToken as string;
+
+            Cookies.set("accessToken", accessToken, { domain: "http://localhost:5173/", sameSite: "Lax", secure: false, path: "/" })
+            // Cookies.set("accessToken", accessToken, { domain: "http://localhost:5173/", path: "/", expires: 60, sameSite: "Lax", secure: false });
+            console.log(accessToken);
 
 
         } catch (error) {
@@ -53,14 +68,35 @@ const UserProvider: React.FC<Iprops> = ({ children }) => {
 
     const logoutUser = () => {
         setUser(null)
+        localStorage.removeItem("user")
     }
 
     const getMe = () => {
+        try {
+            // const accessToken: string = Cookies.get("accessToken") as string;
+            const resp = localStorage.getItem("user");
+            if (resp !== null) {
+                const data = JSON.parse(resp);
+                setUser({
+                    email: data.email,
+                    id: data.id,
+                    name: data.name
+                })
+            }
+            else {
+                setUser(null)
+            }
+            // const resp = await (auth, accessToken);
+            // console.log(resp);
 
+        } catch (error) {
+            console.log(error);
+
+        }
     }
 
     return (
-        <UserContext.Provider value={{ loginUser: loginUser, registerUser: registerUser, loading: loading, user: user, logoutUser: logoutUser }} >
+        <UserContext.Provider value={{ loginUser: loginUser, registerUser: registerUser, loading: loading, user: user, logoutUser: logoutUser, getMe: getMe }} >
             {children}
         </UserContext.Provider>
     )
