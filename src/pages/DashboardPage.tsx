@@ -1,9 +1,13 @@
 import CreatePost from '@/modules/post/CreatePost'
-import React from 'react'
+import ListPosts from '@/modules/post/ListPosts'
+import React, { useState } from 'react'
 
 const DashboardPage = () => {
+    const [mutate, setMutate] = useState<boolean>(false);
     return (
-        <div><CreatePost /></div>
+        <div><CreatePost setMutate={setMutate} />
+            <ListPosts mutate={mutate} setMutate={setMutate} />
+        </div>
     )
 }
 

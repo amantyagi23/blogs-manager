@@ -5,9 +5,9 @@ import './globals.css'
 import UserProvider from './shared/lib/providers/UserProvider.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <UserProvider>
-      <App />
-    </UserProvider>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <UserProvider>
+    <App />
+  </UserProvider>
+  // </React.StrictMode>,
 )

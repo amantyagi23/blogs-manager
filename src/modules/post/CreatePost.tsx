@@ -1,11 +1,10 @@
 import { db } from '@/config/fireBaseConfig';
 import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { addDoc, collection, } from 'firebase/firestore';
 import React, { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import ReactQuill from 'react-quill';
-import { v4 as UUIDV4 } from "uuid"
 import 'react-quill/dist/quill.snow.css';
 import { UserContext } from '@/shared/lib/providers/UserProvider';
 
@@ -17,7 +16,11 @@ interface IFormType {
     author: string;
 }
 
-const CreatePost = () => {
+interface Iprops {
+    setMutate: (mutate: boolean) => void
+}
+
+const CreatePost: React.FC<Iprops> = ({ setMutate }) => {
 
     const myColors = [
         "purple",
@@ -82,7 +85,7 @@ const CreatePost = () => {
 
             const resp = await addDoc(collection(db, "blogs"), customObject);
             console.log(resp);
-
+            setMutate(true)
 
         } catch (error) {
             console.log(error);
