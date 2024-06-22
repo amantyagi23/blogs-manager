@@ -1,5 +1,6 @@
 import { db } from '@/config/fireBaseConfig';
 import { Button } from '@/shared/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { collection, getDoc, getDocs } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 
@@ -43,8 +44,9 @@ const PostPage = () => {
 
     return (
         <>
-
-            {posts !== null ? <>{posts.map((post) => (<div key={post.postId}>{JSON.stringify(post)}</div>))}</> : <>Loading...</>}</>
+            {posts !== null ? <>{posts.map((post) => (<Card key={post.postId}  > <CardHeader> <CardTitle>{post.title}</CardTitle>  <span>{post.author}</span>  </CardHeader><CardContent><div dangerouslySetInnerHTML={{ __html: post.content }}></div></CardContent></Card>))}</> : <>Loading...</>}
+            {posts?.length == 0 && <>No Post Yet</>}
+        </>
     )
 }
 

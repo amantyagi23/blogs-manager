@@ -75,7 +75,7 @@ const CreatePost: React.FC<Iprops> = ({ setMutate }) => {
             const customObject: IFormType = {
                 title: data.title,
                 content: code,
-                author: user?.user ? user.user?.id : "",
+                author: user?.user ? user.user?.email : "",
                 date: new Date(),
 
             }

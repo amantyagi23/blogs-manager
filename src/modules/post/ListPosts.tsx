@@ -1,11 +1,16 @@
 import { db } from '@/config/fireBaseConfig';
 import { Button } from '@/shared/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { UserContext } from '@/shared/lib/providers/UserProvider';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import React, { useContext, useEffect, useState } from 'react'
 
+import { Delete } from 'lucide-react';
+import DeletePost from './DeletePost';
+import UpdatePost from './UpdatePost';
 
-interface IPost {
+
+export interface IPost {
     postId: string;
     title: string;
     content: string;
@@ -20,13 +25,14 @@ interface Iprops {
 }
 const ListPosts: React.FC<Iprops> = ({ mutate, setMutate }) => {
 
+
     const user = useContext(UserContext);
     const [posts, setPosts] = useState<IPost[] | null>(null);
     const getData = async () => {
         try {
             const result: IPost[] = [];
 
-            const q = query(collection(db, "blogs"), where("author", "==", user?.user?.id));
+            const q = query(collection(db, "blogs"), where("author", "==", user?.user?.email));
             const response = await getDocs(q);
             response.forEach((doc) => {
                 const data: IPost = {
@@ -49,8 +55,15 @@ const ListPosts: React.FC<Iprops> = ({ mutate, setMutate }) => {
     useEffect(() => {
         getData()
     }, [mutate === true])
+
+
     return (
-        <div>{posts !== null ? <>{posts.map((post) => (<div key={post.postId}>{JSON.stringify(post)}</div>))}</> : <>Loading...</>}</div>
+        <>
+            <h2>Post List</h2>
+            <div>{posts !== null ? <>{posts.map((post) => (<Card key={post.postId}  > <CardHeader> <CardTitle>{post.title}</CardTitle>  <span>{post.author}</span> <UpdatePost /> <DeletePost setMutate={setMutate} postId={post.postId} /> </CardHeader><CardContent><div dangerouslySetInnerHTML={{ __html: post.content }}></div></CardContent></Card>))}</> : <>Loading...</>}</div >
+
+            {posts?.length == 0 && <>No Posts Yet</>}
+        </>
     )
 }
 
