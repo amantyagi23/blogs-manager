@@ -16,13 +16,15 @@ import { Edit } from 'lucide-react'
 import ReactQuill from 'react-quill'
 import { useForm } from 'react-hook-form'
 import { IPost } from './ListPosts'
+import { doc, setDoc } from 'firebase/firestore'
+import { db } from '@/config/fireBaseConfig'
 
 interface IProps {
     post: IPost,
     setMutate: (mutate: boolean) => void
 }
 
-const UpdatePost = () => {
+const UpdatePost: React.FC<IProps> = ({ post, setMutate }) => {
     const myColors = [
         "purple",
         "#785412",
@@ -60,22 +62,38 @@ const UpdatePost = () => {
         "align"
     ];
 
-    const [code, setCode] = useState(
-        "hello guys you can also add fonts and another features to this editor."
-    );
+    const [close, setClose] = useState<boolean>(false);
+    const [code, setCode] = useState(post.content);
     const handleProcedureContentChange = (content: any) => {
         setCode(content);
     };
-    const { register, reset, handleSubmit, } = useForm();
+    const { register, reset, handleSubmit, } = useForm({ defaultValues: { title: post.title } });
 
-    const onSubmit = (data: unknown) => {
-        console.log(data);
+    const onSubmit = async (data: unknown) => {
 
+
+        try {
+            console.log(data);
+            const customObject = {
+                title: data.title,
+                content: code,
+                author: post.author,
+                date: new Date(),
+            }
+
+            const response = await setDoc(doc(db, "blogs", post.postId), customObject)
+            console.log(response);
+            setMutate(true);
+            setClose(false);
+
+        } catch (error) {
+            //
+        }
     }
     return (
-        <Dialog>
+        <Dialog open={close}>
             <DialogTrigger asChild>
-                <Button variant="outline"><Edit />Edit Post</Button>
+                <Button onClick={() => setClose(true)} variant="outline"><Edit />Edit Post</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>

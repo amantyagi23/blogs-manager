@@ -60,7 +60,7 @@ const ListPosts: React.FC<Iprops> = ({ mutate, setMutate }) => {
     return (
         <>
             <h2>Post List</h2>
-            <div>{posts !== null ? <>{posts.map((post) => (<Card key={post.postId}  > <CardHeader> <CardTitle>{post.title}</CardTitle>  <span>{post.author}</span> <UpdatePost /> <DeletePost setMutate={setMutate} postId={post.postId} /> </CardHeader><CardContent><div dangerouslySetInnerHTML={{ __html: post.content }}></div></CardContent></Card>))}</> : <>Loading...</>}</div >
+            <div>{posts !== null ? <>{posts.map((post) => (<Card key={post.postId}  > <CardHeader> <CardTitle>{post.title}</CardTitle>  <span>{post.author}</span> <UpdatePost post={post} setMutate={setMutate} /> <DeletePost setMutate={setMutate} postId={post.postId} /> </CardHeader><CardContent><div dangerouslySetInnerHTML={{ __html: post.content }}></div></CardContent></Card>))}</> : <>Loading...</>}</div >
 
             {posts?.length == 0 && <>No Posts Yet</>}
         </>
