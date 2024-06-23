@@ -44,7 +44,9 @@ const PostPage = () => {
 
     return (
         <>
-            {posts !== null ? <>{posts.map((post) => (<Card key={post.postId}  > <CardHeader> <CardTitle>{post.title}</CardTitle>  <span>{post.author}</span>  </CardHeader><CardContent><div dangerouslySetInnerHTML={{ __html: post.content }}></div></CardContent></Card>))}</> : <>Loading...</>}
+            <div className='flex flex-wrap justify-center gap-4'>
+                {posts !== null ? <>{posts.map((post) => (<Card key={post.postId} className='w-2/5 hover:scale-105' > <CardHeader> <CardTitle>{post.title}</CardTitle>  <span>{post.author}</span>  </CardHeader><CardContent><div dangerouslySetInnerHTML={{ __html: post.content }}></div></CardContent></Card>))}</> : <>Loading...</>}
+            </div>
             {posts?.length == 0 && <>No Post Yet</>}
         </>
     )

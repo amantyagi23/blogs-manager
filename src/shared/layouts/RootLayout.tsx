@@ -16,7 +16,7 @@ const RootLayout: React.FC<Props> = ({ children }) => {
     return (
         <>
             <NavBar />
-            {children}
+            <div className='container'>{children}</div>
 
         </>
     )
