@@ -9,11 +9,14 @@ import 'react-quill/dist/quill.snow.css';
 import { UserContext } from '@/shared/lib/providers/UserProvider';
 
 
-interface IFormType {
+interface IDataType {
     title: string;
     content: unknown;
     date: Date;
     author: string;
+}
+export interface IFormType {
+    title: string
 }
 
 interface Iprops {
@@ -59,20 +62,20 @@ const CreatePost: React.FC<Iprops> = ({ setMutate }) => {
         "align"
     ];
 
-    const [code, setCode] = useState(
+    const [code, setCode] = useState<string>(
         "hello guys you can also add fonts and another features to this editor."
     );
-    const handleProcedureContentChange = (content: any) => {
+    const handleProcedureContentChange = (content: string) => {
         setCode(content);
     };
-    const { register, reset, handleSubmit, } = useForm();
+    const { register, reset, handleSubmit, } = useForm<IFormType>();
 
     const user = useContext(UserContext);
-    const onSubmit = async (data: unknown) => {
+    const onSubmit = async (data: IFormType) => {
 
 
         try {
-            const customObject: IFormType = {
+            const customObject: IDataType = {
                 title: data.title,
                 content: code,
                 author: user?.user ? user.user?.email : "",

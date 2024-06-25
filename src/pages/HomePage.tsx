@@ -1,8 +1,15 @@
+
 import ShowPost from "@/modules/post/ShowPost";
-import { CustomSkelton } from "@/shared/components/CustomSkelton";
 import axios from "axios";
 import useSWR from 'swr'
-import { Suspense, useEffect, useState } from "react";
+
+
+interface IPostProps {
+    id: string;
+    title: string;
+    description: string;
+    image: string
+}
 
 const HomePage: React.FC = () => {
     // const [data, setData] = useState(null);
@@ -14,7 +21,7 @@ const HomePage: React.FC = () => {
 
     // }
 
-    const { data, error, isLoading, mutate } = useSWR("https://fakestoreapi.com/products", () => axios.get("https://fakestoreapi.com/products"))
+    const { data, error, isLoading } = useSWR("https://fakestoreapi.com/products", () => axios.get("https://fakestoreapi.com/products"))
 
     // setTimeout(getData, 10000);
 
@@ -31,7 +38,7 @@ const HomePage: React.FC = () => {
             <>
                 <h1>Home Page</h1>
 
-                {data?.data?.map((post) => (<ShowPost key={post.id} desc={post.description} image={post.image} title={post.title} />))}
+                {data?.data?.map((post: IPostProps) => (<ShowPost key={post.id} desc={post.description} image={post.image} title={post.title} />))}
 
             </>
         )

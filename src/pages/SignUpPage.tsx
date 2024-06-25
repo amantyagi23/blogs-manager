@@ -38,10 +38,10 @@ const SignUpPage: React.FC = () => {
             })
             navigate("/login")
 
-        } catch (error) {
+        } catch (error: unknown) {
             toast({
                 title: `Error !`,
-                description: `${error.message.toString()}`,
+                description: `${error}`,
             })
         }
 

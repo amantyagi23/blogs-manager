@@ -6,7 +6,6 @@ import DashboardPage from "./pages/DashboardPage"
 import RootLayout from "./shared/layouts/RootLayout"
 import { Toaster } from "./shared/components/ui/toaster"
 import ProtectedRoute from "./shared/routes/ProtectedRoute"
-import PostPage from "./pages/PostPage"
 
 const App = () => {
   return <>

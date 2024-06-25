@@ -1,9 +1,7 @@
 import { db } from '@/config/fireBaseConfig';
-import { Button } from '@/shared/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
-import { Skeleton } from '@/shared/components/ui/skeleton';
-import { collection, getDoc, getDocs } from 'firebase/firestore';
-import React, { Suspense, useEffect, useState } from 'react'
+import { collection, getDocs } from 'firebase/firestore';
+import { useEffect, useState } from 'react'
 
 interface IPost {
     postId: string;
@@ -21,9 +19,14 @@ const PostPage = () => {
             const result: IPost[] = [];
             const response = await getDocs(collection(db, "blogs"));
             response.forEach((doc) => {
+                const dataDoc = doc.data()
                 const data: IPost = {
-                    ...doc.data(),
-                    postId: doc.id.toString()
+                    postId: doc.id.toString(),
+                    author: dataDoc.author,
+                    content: dataDoc.content,
+                    date: dataDoc.date,
+                    title: dataDoc.title,
+
                 }
                 result.push(data);
                 // console.log(data);

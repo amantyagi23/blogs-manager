@@ -38,10 +38,10 @@ const LoginPage = () => {
             })
             navigate("/")
 
-        } catch (error) {
+        } catch (error: unknown) {
             toast({
                 title: `Error !`,
-                description: `${error.message.toString()}`,
+                description: `${error}`,
             })
         }
     }

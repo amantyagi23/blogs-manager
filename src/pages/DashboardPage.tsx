@@ -1,6 +1,6 @@
 import CreatePost from '@/modules/post/CreatePost'
 import ListPosts from '@/modules/post/ListPosts'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 const DashboardPage = () => {
     const [mutate, setMutate] = useState<boolean>(false);

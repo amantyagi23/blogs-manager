@@ -18,6 +18,7 @@ import { useForm } from 'react-hook-form'
 import { IPost } from './ListPosts'
 import { doc, setDoc } from 'firebase/firestore'
 import { db } from '@/config/fireBaseConfig'
+import { IFormType } from './CreatePost'
 
 interface IProps {
     post: IPost,
@@ -63,13 +64,13 @@ const UpdatePost: React.FC<IProps> = ({ post, setMutate }) => {
     ];
 
     const [close, setClose] = useState<boolean>(false);
-    const [code, setCode] = useState(post.content);
-    const handleProcedureContentChange = (content: any) => {
+    const [code, setCode] = useState<string>(post.content);
+    const handleProcedureContentChange = (content: string) => {
         setCode(content);
     };
-    const { register, reset, handleSubmit, } = useForm({ defaultValues: { title: post.title } });
+    const { register, handleSubmit, } = useForm<IFormType>({ defaultValues: { title: post.title } });
 
-    const onSubmit = async (data: unknown) => {
+    const onSubmit = async (data: IFormType) => {
 
 
         try {
@@ -91,12 +92,12 @@ const UpdatePost: React.FC<IProps> = ({ post, setMutate }) => {
         }
     }
     return (
-        <Dialog open={close}>
-            <DialogTrigger asChild>
+        <Dialog open={close} >
+            <DialogTrigger asChild >
                 <Button onClick={() => setClose(true)} variant="outline"><Edit />Edit Post</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
+                <DialogHeader  >
                     <DialogTitle>Edit profile</DialogTitle>
                     <DialogDescription>
                         Make changes to your profile here. Click save when you're done.

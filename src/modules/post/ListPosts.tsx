@@ -1,11 +1,8 @@
 import { db } from '@/config/fireBaseConfig';
-import { Button } from '@/shared/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { UserContext } from '@/shared/lib/providers/UserProvider';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import React, { useContext, useEffect, useState } from 'react'
-
-import { Delete } from 'lucide-react';
 import DeletePost from './DeletePost';
 import UpdatePost from './UpdatePost';
 
@@ -35,9 +32,14 @@ const ListPosts: React.FC<Iprops> = ({ mutate, setMutate }) => {
             const q = query(collection(db, "blogs"), where("author", "==", user?.user?.email));
             const response = await getDocs(q);
             response.forEach((doc) => {
+                const dataDoc = doc.data()
                 const data: IPost = {
-                    ...doc.data(),
-                    postId: doc.id.toString()
+                    postId: doc.id.toString(),
+                    author: dataDoc.author,
+                    content: dataDoc.content,
+                    date: dataDoc.date,
+                    title: dataDoc.title,
+
                 }
                 result.push(data);
                 // console.log(data);
